@@ -1,0 +1,81 @@
+<h3>Round {{ ds.activeGame.round_number }} &mdash; {{ ds.activeGame.current_team.name }}'s Turn</h3>
+
+<div class="list-group team-header row">
+	<div class="team col-lg-2 col-md-2 col-sm-3 text-center" ng-repeat="team in ds.orderedTeams" ng-class="{'bg-primary': ds.activeGame.current_team.id == team.id}">
+		<img ng-src="images/{{ team.logo_location }}" width="100px" />
+		<div class="text-uppercase text-left">
+			<div class="color-badge pull-left" style="background-color: #{{ team.color }};"></div>
+			<span class="name">
+				{{ team.short_name }}: ${{ team.score }} <em ng-class="{'text-success': team.score > team.initialScore, 'text-danger': team.score < team.initialScore }">(<span ng-show="team.score > team.initialScore">+</span>{{ team.score - team.initialScore }})</em>
+			</span>
+		</div>
+	</div>
+</div>
+
+<div class="panel panel-info">
+	<div class="panel-heading"><h4 class="panel-title">Turn Actions</h4></div>
+	<div class="panel-footer">
+		<button ng-click="prevTurn()" ng-disabled="ds.activeGame.round == 1 && ds.activeGame.current_team.pivot.order == 1" class="btn btn-default">Previous Turn</button>
+		<button ng-click="endGame()" class="btn btn-default">End Game</button>
+		<button ng-click="nextTurn()" class="btn btn-primary pull-right">End Turn</button>
+	</div>
+</div>
+
+<div class="panel panel-info">
+	<div class="panel-heading"><h4 class="panel-title">Invasions</h4></div>
+	<div class="panel-footer">
+		<p>Here we have the invasion logger, select territory then select success or fail depending on the outcome of the invasion.</p>
+		<form class="form-inline">
+		  <div class="form-group">
+		    <label for="exampleInputName2">Country</label>
+		    <select class="form-control" ng-options="t as t.name for t in ds.territories | orderBy: 'name' track by t.id" ng-model="invasionCountry"></select>
+		  </div>
+		  <button ng-click="invadeFail()" class="btn btn-danger">Fail!</button>
+		  <button ng-click="invadeSuccess()" class="btn btn-success">Success!</button>
+		</form>
+	</div>
+</div>
+
+<div class="panel panel-info">
+	<div class="panel-heading"><h4 class="panel-title">Invasion History</h4></div>
+	<div class="panel-footer">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Round</th>
+					<th>Team</th>
+					<th>Territory</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody class="table-striped">
+				<tr ng-repeat="invasion in ds.territoryBattles | orderBy: '-created_at' | limitTo: 10">
+					<td>{{ invasion.round_number }}</td>
+					<td>{{ invasion.attacking_team.name }}</td>
+					<td>{{ invasion.territory.name }}</td>
+					<td>{{ invasion.created_at | date : format : short }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div class="panel panel-info">
+	<div class="panel-heading"><h4 class="panel-title">Game Overview</h4></div>
+	<div class="panel-footer">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Alliance</th>
+					<th># Teams</th>
+				</tr>
+			</thead>
+			<tbody class="table-striped">
+				<tr ng-repeat="alliance in ds.alliances">
+					<td>{{ alliance.name }}</td>
+					<td>{{ alliance.teams.length }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

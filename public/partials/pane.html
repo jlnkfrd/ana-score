@@ -1,0 +1,10 @@
+<table ng-table="tableParams" show-filter="true" class="table table-striped">
+	<tr ng-repeat="t in ds.territories">
+		<td title="'Territory'" filter="{ name: 'text' }" sortable="'name'">
+			{{ t.name }}</td>
+		<td title="'Owner'">
+			{{ t.current_owner.short_name }}</td>
+		<td title="'Value'" sortable="'value'">
+			{{ t.value }}</td>
+	</tr>
+</table>

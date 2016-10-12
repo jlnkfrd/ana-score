@@ -1,0 +1,27 @@
+<div class="col-md-8">
+	<h3>Recent Games</h3>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Date Started</th>
+				<th>Round</th>
+				<th>Turn</th>
+				<th>Status</th>
+			</tr>
+		</thead>
+		<tbody class="table-striped">
+			<tr ng-repeat="game in games">
+				<td><a ui-sref="game({ gameId: game.id })">{{ game.start_date }}</a></td>
+				<td>{{ game.round_number }}</td>
+				<td>{{ game.current_team.short_name }}</td>
+				<td>&nbsp;</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div class="col-md-4">
+	<h3 class="text-center">Start New Game</h3>
+	<div class="list-group">
+		<a href="#" ng-repeat="version in gameTypes" ng-click="createGame(version.id)" class="list-group-item text-center">{{ version.name }}</a>
+	</div>
+</div>
